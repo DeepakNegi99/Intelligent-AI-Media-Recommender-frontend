@@ -1,10 +1,7 @@
-Backend/.dockerignore
-Frontend/vite.config.ts
-Frontend/tsconfig.node.json
-Frontend/tsconfig.json
-Backend/bin/Debug/net8.0/appsettings.json
-Backend/.vs/Backend/FileContentIndex/17bc4d6d-6b5f-49e2-9fc0-fb8ee57ddde3.vsidx
-Backend/.vs/Backend/FileContentIndex/83301555-4cad-48ad-b670-cb347aa83984.vsidx
-Backend/.vs/Backend/FileContentIndex/88579f1e-a68f-452e-8d10-14a66308d447.vsidx
-Backend/.vs/Backend/FileContentIndex/b40e6b1a-12de-4a6d-9252-2a30565bd5c0.vsidx
-Backend/.vs/Backend/FileContentIndex/ebf907c9-154a-4af8-b1f0-6e73e142548b.vsidx
+*.vsidx
+*.db-shm
+*.db
+*.v2
+*.json
+*.json
+*.dll
