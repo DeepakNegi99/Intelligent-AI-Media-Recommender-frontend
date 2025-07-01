@@ -5,3 +5,7 @@
 *.json
 *.json
 *.dll
+Backend/.vs/Backend/v17/.suo
+Backend/obj/Debug/net8.0/Backend.AssemblyInfo.cs
+Backend/obj/Debug/net8.0/Backend.AssemblyInfoInputs.cache
+/Backend/obj
