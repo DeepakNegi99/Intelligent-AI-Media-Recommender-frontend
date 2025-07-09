@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Box, Button, TextField, Typography, Chip } from "@mui/material";
 import axios from "axios";
+import AdminLogin from "./AdminLogin";
 
 const Admin: React.FC = () => {
   const [title, setTitle] = useState("");
@@ -9,6 +10,8 @@ const Admin: React.FC = () => {
   const [platforms, setPlatforms] = useState("");
   const [type, setType] = useState<"books" | "movies" | "tvseries">("books");
   const [message, setMessage] = useState("");
+  const [token, setToken] = useState<string | null>(null);
+
 
   const handleUpload = async () => {
     const payload = {
@@ -28,6 +31,8 @@ const Admin: React.FC = () => {
       setMessage(err.response?.data || "Upload failed.");
     }
   };
+
+  if (!token) return <AdminLogin onLogin={setToken} />;
 
   return (
     <Box sx={{ p: 4 }}>
