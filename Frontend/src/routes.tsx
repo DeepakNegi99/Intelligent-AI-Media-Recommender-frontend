@@ -4,6 +4,7 @@ import Polls from './pages/Polls';
 import Questionnaire from './pages/Questionnaire';
 import Recommendations from './pages/Recommendations';
 import Admin from './pages/Admin';
+import RecommendationsPage from './pages/RecommendationsPage';
 
 export const AppRoutes = () => (
   <Routes>
@@ -12,5 +13,6 @@ export const AppRoutes = () => (
     <Route path="/questionnaire" element={<Questionnaire />} />
     <Route path="/recommendations" element={<Recommendations />} />
     <Route path="/admin" element={<Admin />} />
+    <Route path="/recommendations" element={<RecommendationsPage />} />
   </Routes>
 );
