@@ -9,7 +9,7 @@ const AdminLogin = ({ onLogin }: { onLogin: (token: string) => void }) => {
 
   const handleLogin = async () => {
     try {
-      const res = await axios.post('http://localhost:5000/auth/login', { username, password });
+      const res = await axios.post('http://localhost:12046/auth/login', { username, password });
       onLogin(res.data.token);
     } catch {
       setMsg('Invalid credentials');
