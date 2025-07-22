@@ -1,68 +1,159 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Card, CardMedia, CardContent, Typography, Container } from '@mui/material';
-import  Grid  from '@mui/material/Grid';
-import type { RecommendationResponse } from './types';
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Card,
+  CardContent,
+  type SelectChangeEvent,
+} from "@mui/material";
+import Grid from "@mui/material/Grid";
+// Update the import path to the correct location of recommendationApi
+import { useGetRecommendationsQuery } from "../redux/api/recommendationApi";
 
-const RecommendationsPage = () => {
-  const [data, setData] = useState<RecommendationResponse | null>(null);
+const RecommendationsPage: React.FC = () => {
+  const userId = localStorage.getItem("userId") || "defaultUser";
+  const { data, isLoading, error } = useGetRecommendationsQuery(userId);
+  const [sortBy, setSortBy] = useState("title");
 
-  useEffect(() => {
-    const fetchRecommendations = async () => {
-      try {
-        const res = await axios.post<RecommendationResponse>(
-          'http://localhost:5000/api/recommendations',
-          {
-            // Example input
-            userId: '12345',
-          }
-        );
-        setData(res.data);
-      } catch (error) {
-        console.error('Error fetching recommendations:', error);
-      }
-    };
+  const handleSortChange = (event: SelectChangeEvent) => {
+    setSortBy(event.target.value as string);
+  };
 
-    fetchRecommendations();
-  }, []);
+  const sortItems = (items: any[]) => {
+    return [...items].sort((a, b) => {
+      if (sortBy === "title") return a.title.localeCompare(b.title);
+      if (sortBy === "rating") return (b.rating || 0) - (a.rating || 0);
+      if (sortBy === "year") return (b.releaseYear || 0) - (a.releaseYear || 0);
+      return 0;
+    });
+  };
 
-  const renderCards = (items: any[], type: 'Book' | 'Movie' | 'TV') =>
-    items.map((item) => (
-      <Grid item xs={12} sm={6} md={4} key={item.id}>
-        <Card sx={{ height: '100%' }}>
-          <CardMedia
-            component="img"
-            height="180"
-            image={item.imageUrl}
-            alt={item.title}
-          />
-          <CardContent>
-            <Typography variant="h6">{item.title}</Typography>
-            <Typography variant="body2" color="text.secondary">
-              {item.description}
-            </Typography>
-          </CardContent>
-        </Card>
-      </Grid>
-    ));
+  if (isLoading) {
+    return (
+      <Box display="flex" justifyContent="center" mt={4}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box display="flex" justifyContent="center" mt={4}>
+        <Typography color="error">Failed to fetch recommendations.</Typography>
+      </Box>
+    );
+  }
+
+  const sortedBooks = sortItems(data?.books || []);
+  const sortedMovies = sortItems(data?.movies || []);
+  const sortedSeries = sortItems(data?.series || []);
 
   return (
-    <Container sx={{ py: 4 }}>
-      <Typography variant="h4" gutterBottom>Recommended Books</Typography>
-      <Grid container spacing={3}>
-        {data?.books && renderCards(data.books, 'Book')}
+    <Box sx={{ p: 4 }}>
+      <Typography variant="h4" gutterBottom>
+        Your Recommendations
+      </Typography>
+
+      <Box display="flex" gap={2} mb={4}>
+        <FormControl sx={{ minWidth: 180 }}>
+          <InputLabel>Sort By</InputLabel>
+          <Select value={sortBy} onChange={handleSortChange} label="Sort By">
+            <MenuItem value="title">Title</MenuItem>
+            <MenuItem value="rating">Rating</MenuItem>
+            <MenuItem value="year">Release Year</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
+
+      <Typography variant="h5" gutterBottom>
+        Books
+      </Typography>
+      <Grid container spacing={2}>
+        {sortedBooks.map((book: any) => (
+          <div
+            key={book._id}
+            style={{
+              flex: "1 1 30%",
+              minWidth: 250,
+              margin: "12px",
+              display: "flex",
+            }}
+          >
+            <Card style={{ width: "100%" }}>
+              <CardContent>
+                <Typography variant="h6">{book.title}</Typography>
+                <Typography variant="body2">Genre: {book.genre}</Typography>
+                <Typography variant="body2">Rating: {book.rating}</Typography>
+                <Typography variant="body2">
+                  Year: {book.releaseYear}
+                </Typography>
+              </CardContent>
+            </Card>
+          </div>
+        ))}
       </Grid>
 
-      <Typography variant="h4" gutterBottom mt={4}>Recommended Movies</Typography>
-      <Grid container spacing={3}>
-        {data?.movies && renderCards(data.movies, 'Movie')}
+      <Typography variant="h5" gutterBottom mt={4}>
+        Movies
+      </Typography>
+      <Grid container spacing={2}>
+        {sortedMovies.map((movie: any) => (
+          <div
+            key={movie._id}
+            style={{
+              flex: "1 1 30%",
+              minWidth: 250,
+              margin: "12px",
+              display: "flex",
+            }}
+          >
+            <Card style={{ width: "100%" }}>
+              <CardContent>
+                <Typography variant="h6">{movie.title}</Typography>
+                <Typography variant="body2">Genre: {movie.genre}</Typography>
+                <Typography variant="body2">Rating: {movie.rating}</Typography>
+                <Typography variant="body2">
+                  Year: {movie.releaseYear}
+                </Typography>
+              </CardContent>
+            </Card>
+          </div>
+        ))}
       </Grid>
 
-      <Typography variant="h4" gutterBottom mt={4}>Recommended TV Series</Typography>
-      <Grid container spacing={3}>
-        {data?.tvSeries && renderCards(data.tvSeries, 'TV')}
+      <Typography variant="h5" gutterBottom mt={4}>
+        TV Series
+      </Typography>
+      <Grid container spacing={2}>
+        {sortedSeries.map((series: any) => (
+          <div
+            key={series._id}
+            style={{
+              flex: "1 1 30%",
+              minWidth: 250,
+              margin: "12px",
+              display: "flex",
+            }}
+          >
+            <Card style={{ width: "100%" }}>
+              <CardContent>
+                <Typography variant="h6">{series.title}</Typography>
+                <Typography variant="body2">Genre: {series.genre}</Typography>
+                <Typography variant="body2">Rating: {series.rating}</Typography>
+                <Typography variant="body2">
+                  Year: {series.releaseYear}
+                </Typography>
+              </CardContent>
+            </Card>
+          </div>
+        ))}
       </Grid>
-    </Container>
+    </Box>
   );
 };
 
