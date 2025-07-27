@@ -20,12 +20,6 @@ const HomePage: React.FC = () => {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
-      <FormControlLabel
-        control={
-          <Switch checked={darkMode} onChange={toggleTheme} color="primary" />
-        }
-        label={darkMode ? <DarkMode /> : <LightMode />}
-      />
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
