@@ -10,7 +10,7 @@ import { useThemeContext } from "../context/ThemeContext";
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
-  const { toggleTheme, darkMode } = useThemeContext();
+  //const { toggleTheme, darkMode } = useThemeContext();
 
   // Example of engagement tracking (simple console log or analytics call)
   React.useEffect(() => {
