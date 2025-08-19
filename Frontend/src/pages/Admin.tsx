@@ -27,7 +27,7 @@ const Admin: React.FC = () => {
         payload
       );
       setMessage(res.data);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setMessage(err.response?.data || "Upload failed.");
     }
   };
