@@ -4,7 +4,6 @@ import { Box, Typography, Button, Container, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import heroImage from "../assets/hero-banner.jpg"; // Add your image to assets folder
-import { useThemeContext } from "../context/ThemeContext";
 
 // inside HomePage component
 
