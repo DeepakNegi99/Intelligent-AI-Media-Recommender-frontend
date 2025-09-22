@@ -28,7 +28,11 @@ const Admin: React.FC = () => {
       );
       setMessage(res.data);
     } catch (err: unknown) {
-      setMessage(err.response?.data || "Upload failed.");
+      if (axios.isAxiosError(err)) {
+        setMessage(err.response?.data || "Upload failed.");
+      } else {
+        setMessage("Upload failed.");
+      }
     }
   };
 

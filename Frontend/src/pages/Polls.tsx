@@ -1,14 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Card, CardContent, Typography, Button, Radio, RadioGroup,
   FormControlLabel, LinearProgress, Box
 } from "@mui/material";
-import { useGetPollQuery, useVotePollMutation } from "../store/pollApi";
 
 const Poll = () => {
-  const pollId = "PUT_YOUR_POLL_ID"; // Get dynamically later
-  const { data: poll, isLoading } = useGetPollQuery(pollId);
-  const [votePoll] = useVotePollMutation();
   const [selected, setSelected] = useState("");
 
   if (isLoading) return <Typography>Loading...</Typography>;
